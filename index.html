@@ -4,30 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
+    <!-- Odkaz na externý CSS súbor so štýlmi hry -->
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
+    <!-- Veľký nadpis v pozadí pre vizuálny efekt -->
     <div id="backgroundTitle">Snake Game</div>
+
+    <!-- Zobrazenie najvyššieho skóre v pravom hornom rohu -->
     <div id="highScore">High Score: 0</div>
+
+    <!-- Hlavný kontajner hry -->
     <div id="gameContainer">
+        <!-- Aktuálne skóre hráča -->
         <div id="score">Score: 0</div>
+        <!-- Plátno, na ktorom sa vykresľuje samotná hra -->
         <canvas id="gameCanvas" width="520" height="520"></canvas>
     </div>
+
+    <!-- Ovládanie hry so šípkami v tvare ako na klávesnici -->
     <div id="controls">
-    <span>Arrows:</span>
-    <div class="arrows-keys">
-        <div class="arrow-row">
-            <span class="key">&#8593;</span>
+        <span>Arrows:</span>
+        <div class="arrows-keys">
+            <div class="arrow-row">
+                <span class="key">&#8593;</span> <!-- Šípka hore -->
+            </div>
+            <div class="arrow-row">
+                <span class="key">&#8592;</span> <!-- Šípka vľavo -->
+                <span class="key">&#8595;</span> <!-- Šípka dole -->
+                <span class="key">&#8594;</span> <!-- Šípka vpravo -->
+            </div>
         </div>
-        <div class="arrow-row">
-            <span class="key">&#8592;</span>
-            <span class="key">&#8595;</span>
-            <span class="key">&#8594;</span>
-        </div>
     </div>
-    </div>
-    </div>
-    </div>
+
+    <!-- Odkaz na JavaScript súbor s logikou hry -->
     <script src="scripts/game.js"></script>
 </body>
-</html>

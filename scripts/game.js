@@ -1,3 +1,4 @@
+// Vygeneruje náhodnú pozíciu pre jedlo, ktorá nie je na tele hada
 function randomFood() {
     let x, y;
     do {
@@ -7,27 +8,30 @@ function randomFood() {
     return { x, y };
 }
 
+// Získanie referencií na HTML elementy
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreDiv = document.getElementById('score');
-
 const highScoreDiv = document.getElementById('highScore');
+
+// Načítanie high score z localStorage alebo nastavenie na 0
 let highScore = localStorage.getItem('snakeHighScore') ? parseInt(localStorage.getItem('snakeHighScore')) : 0;
-highScoreDiv.innerText = 'High Score: ' + highScore; // Zobraz high score
+highScoreDiv.innerText = 'High Score: ' + highScore;
 if (highScore) {
-    highScoreDiv.style.display = 'block'; // Zobraz high score len ak existuje
+    highScoreDiv.style.display = 'block';
 }
 
+// Nastavenie základných parametrov hry
 const box = 26; // veľkosť jedného políčka
 const canvasSize = 520;
-let snake = [{ x: 9 * box, y: 10 * box }];
-let direction = null;
-let food = randomFood();
-let score = 0;
-let gameInterval = null;
-let isGameOver = false;
+let snake = [{ x: 9 * box, y: 10 * box }]; // počiatočná pozícia hada
+let direction = null; // aktuálny smer pohybu
+let food = randomFood(); // počiatočná pozícia jedla
+let score = 0; // aktuálne skóre
+let gameInterval = null; // interval pre starý spôsob animácie (už sa nepoužíva)
+let isGameOver = false; // stav hry
 
-// Vytvor Game Over overlay a tlačidlo na reštart
+// Vytvorenie overlayu pre Game Over a tlačidla na reštart
 let gameOverOverlay = document.createElement('div');
 gameOverOverlay.id = 'gameOverOverlay';
 gameOverOverlay.style.position = 'absolute';
@@ -44,6 +48,7 @@ gameOverOverlay.style.zIndex = '10';
 gameOverOverlay.style.transition = 'opacity 0.4s';
 gameOverOverlay.style.opacity = '0';
 
+// Text Game Over
 let gameOverText = document.createElement('div');
 gameOverText.innerText = 'GAME OVER!';
 gameOverText.style.color = '#e74c3c';
@@ -52,6 +57,7 @@ gameOverText.style.fontSize = '3rem';
 gameOverText.style.marginBottom = '12px';
 gameOverText.style.textShadow = '0 2px 16px #fff, 0 0px 8px #e74c3c88';
 
+// Tlačidlo na reštart hry
 let restartBtn = document.createElement('button');
 restartBtn.innerText = 'Restart Game';
 restartBtn.style.marginTop = '20px';
@@ -64,19 +70,25 @@ restartBtn.style.color = '#222';
 restartBtn.style.cursor = 'pointer';
 restartBtn.addEventListener('click', restartGame);
 
+// Pridanie textu a tlačidla do overlayu
 gameOverOverlay.appendChild(gameOverText);
 gameOverOverlay.appendChild(restartBtn);
 
+// Pridanie overlayu do hlavného kontajnera hry
 document.getElementById('gameContainer').style.position = 'relative';
 document.getElementById('gameContainer').appendChild(gameOverOverlay);
 
+// Pridanie event listenera na ovládanie smeru hada
 document.addEventListener('keydown', changeDirection);
 
+// Spustenie hry po načítaní skriptu
 startGame();
 
+// Premenné pre animáciu a rýchlosť hada
 let lastFrameTime = 0;
 const snakeSpeed = 8; // počet pohybov za sekundu
 
+// Funkcia na reštart hry a resetovanie všetkých premenných
 function startGame() {
     snake = [{ x: 9 * box, y: 10 * box }];
     direction = null;
@@ -92,6 +104,7 @@ function startGame() {
     requestAnimationFrame(gameLoop);
 }
 
+// Hlavný animačný cyklus hry
 function gameLoop(timestamp) {
     if (!lastFrameTime) lastFrameTime = timestamp;
     const progress = (timestamp - lastFrameTime) / 1000;
@@ -105,6 +118,7 @@ function gameLoop(timestamp) {
     // Ak je game over, už nevolaj requestAnimationFrame
 }
 
+// Funkcia na vykreslenie hada a jedla
 function drawSnakeAndFood() {
     // Nakresli hada
     for (let i = 0; i < snake.length; i++) {
@@ -118,6 +132,7 @@ function drawSnakeAndFood() {
     ctx.fillRect(food.x, food.y, box, box);
 }
 
+// Funkcia na vykreslenie a pohyb hada v jednom kroku
 function draw() {
     ctx.clearRect(0, 0, canvasSize, canvasSize);
 
@@ -156,6 +171,7 @@ function draw() {
     snake.unshift(head);
 }
 
+// Funkcia na zmenu smeru pohybu podľa stlačenej šípky
 function changeDirection(event) {
     if (isGameOver) return;
     let newDirection = null;
@@ -165,17 +181,18 @@ function changeDirection(event) {
     else if (event.key === 'ArrowDown' && direction !== 'UP') newDirection = 'DOWN';
 
     if (newDirection) {
-        // Ak je to prvý pohyb, spusti interval
-        if (!direction) {
-            direction = newDirection;
-            if (gameInterval) clearInterval(gameInterval);
-            gameInterval = setInterval(draw, 100);
-        } else {
-            direction = newDirection;
-        }
+    // Ak je to prvý pohyb, spusti interval
+    if (!direction) {
+        direction = newDirection;
+        if (gameInterval) clearInterval(gameInterval);
+        gameInterval = setInterval(draw, 100);
+    } else {
+        direction = newDirection;
     }
 }
+}
 
+// Funkcia na detekciu kolízie hlavy hada s jeho telom
 function collision(head, array) {
     for (let i = 0; i < array.length; i++) {
         if (head.x === array[i].x && head.y === array[i].y) {
@@ -185,8 +202,10 @@ function collision(head, array) {
     return false;
 }
 
+// Funkcia na ukončenie hry a zobrazenie overlayu
 function gameOver() {
     isGameOver = true;
+    // Uloženie high score do localStorage
     if (score > highScore) {
         highScore = score;
         localStorage.setItem('snakeHighScore', highScore);
@@ -200,6 +219,7 @@ function gameOver() {
     `;
 }
 
+// Funkcia na reštart hry po kliknutí na tlačidlo
 function restartGame() {
     gameOverOverlay.classList.remove('show');
     gameOverOverlay.style.display = 'none';
@@ -212,3 +232,12 @@ document.addEventListener('click', function(event) {
         restartGame();
     }
 });
+
+function resizeCanvas() {
+    // Najmenší rozmer z viewportu (napr. max 520px)
+    const size = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 520);
+    canvas.width = size;
+    canvas.height = size;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
