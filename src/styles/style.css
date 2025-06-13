@@ -1,0 +1,190 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 90px;
+}
+
+html, body {
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden !important;
+    box-sizing: border-box;
+}
+
+#backgroundTitle {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    color: #ffffff22;
+    font-weight: bold;
+    letter-spacing: 8px;
+    z-index: 0;
+    user-select: none;
+    pointer-events: none;
+    text-shadow: 0 8px 32px #74ebd5, 0 1px 0 #fff;
+    width: 100vw;
+    text-align: center;
+}
+
+#gameContainer {
+    background: rgba(255,255,255,0.95);
+    padding: 40px 40px 32px 40px;
+    border-radius: 32px;
+    box-shadow: 0 16px 48px 0 rgba(31, 38, 135, 0.25), 0 2px 8px 0 #74ebd5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 280px;
+    z-index: 1;
+    position: relative;
+    transition: box-shadow 0.3s;
+    overflow: hidden;
+}
+
+#highScore {
+    position: fixed;
+    top: 32px;
+    right: 40px;
+    left: auto;
+    transform: none;
+    width: auto;
+    min-width: 0;
+    font-size: 1.1rem;
+    color: #222;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #e0e7ef 0%, #b3c6e0 100%);
+    padding: 10px 24px 8px 24px;
+    border-radius: 18px;
+    box-shadow: 0 2px 8px 0 rgba(44, 62, 80, 0.08);
+    z-index: 10;
+    text-align: center;
+    border-bottom: 1px solid #d1d9e6;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+#gameContainer:hover {
+    box-shadow: 0 32px 64px 0 rgba(31, 38, 135, 0.32), 0 4px 16px 0 #74ebd5;
+}
+
+canvas {
+    border-radius: 24px;
+    background: #e0e7ef;
+    box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.12);
+    margin-bottom: 24px;
+    margin-top: 8px;
+    transition: box-shadow 0.3s;
+    /* odstránenie okraja, aby zaoblenie fungovalo aj na vonkajšej časti */
+    border: none;
+    display: block;
+}
+
+#score {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: #f8fafc;
+    padding: 8px 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px 0 rgba(44, 62, 80, 0.06);
+}
+
+#controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.95);
+    padding: 8px 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px 0 rgba(44, 62, 80, 0.10);
+    color: #555;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2;
+    font-weight: 500;
+    letter-spacing: 1px;
+    min-width: unset;
+    overflow: visible;
+}
+
+.arrows-keys {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-left: 8px;
+}
+
+.arrow-row {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0e7ef;
+    border: 2px solid #74ebd5;
+    color: #222;
+    font-size: 1rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    box-shadow: 0 2px 8px 0 rgba(44, 62, 80, 0.08);
+    font-weight: bold;
+    user-select: none;
+    margin: 2px;
+}
+
+.key.blank {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 26px;
+    height: 26px;
+    margin: 2px;
+}
+
+#gameOverOverlay {
+    transition: opacity 0.4s;
+    opacity: 0;
+}
+#gameOverOverlay.show {
+    opacity: 1 !important;
+}
+
+@media (max-width: 700px) {
+    #controls {
+        padding: 4px 4vw;
+        font-size: 0.95rem;
+        bottom: 4px;
+    }
+    .key {
+        width: 20px;
+        height: 20px;
+        font-size: 0.9rem;
+        margin: 1px;
+    }
+}
